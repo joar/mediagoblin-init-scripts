@@ -1,10 +1,10 @@
 #!/bin/sh
 # /etc/init.d/mediagoblin-paster
 #
-## LICENSE
-# To the extent possible under law, Joar Wandborg has waived all copyright and 
-# related or neighboring rights to mediagoblin-paster. This work is published
-# from Sweden.
+## LICENSE: CC0 <http://creativecommons.org/publicdomain/zero/1.0/>
+# To the extent possible under law, Joar Wandborg <http://wandborg.se> has
+# waived all copyright and related or neighboring rights to
+# mediagoblin-paster. This work is published from Sweden.
 #
 ## CREDIT
 # Credit goes to jpope <http://jpope.org/> and 
