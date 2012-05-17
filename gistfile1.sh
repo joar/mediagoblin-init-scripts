@@ -1,6 +1,16 @@
 #!/bin/sh
 # /etc/init.d/mediagoblin-paster
-
+#
+## LICENSE
+# To the extent possible under law, Joar Wandborg has waived all copyright and 
+# related or neighboring rights to mediagoblin-paster. This work is published
+# from Sweden.
+#
+## CREDIT
+# Credit goes to jpope <http://jpope.org/> and 
+# chimo <http://chimo.chromic.org/>. From which' Arch init scripts this is
+# based upon.
+#
 # ### BEGIN INIT INFO
 # Provides:          mediagoblin-paster
 # Required-Start:    $remote_fs $syslog $network $named $local_fs
@@ -14,17 +24,21 @@
 # Description:       This script will initiate the GNU MediaGoblin paster
 #                    fcgi server.
 ### END INIT INFO
-#
-## CREDIT
-# Credit to jpope and chromic. TODO: Links
-#
+
+###########################################
+# CHANGE THIS
+# to suit your environment
+###########################################
+MG_ROOT=/home/joar/git/mediagoblin
+###########################################
+# NOW STOP
+# You probably won't have to change these.
+###########################################
 
 set -e
-#set -x
 
 DAEMON_NAME=mediagoblin-paster
 
-MG_ROOT=/home/joar/git/mediagoblin
 MG_BIN=$MG_ROOT/bin
 MG_PASTER_BIN=$MG_BIN/paster
 MG_PASTE_INI=$MG_ROOT/paste_local.ini
