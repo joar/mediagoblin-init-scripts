@@ -13,10 +13,9 @@
 #
 # ### BEGIN INIT INFO
 # Provides:          mediagoblin-paster
-# Required-Start:    $remote_fs $syslog $network $named $local_fs
+# Required-Start:    $network $named $local_fs
 # Required-Stop:     $remote_fs $syslog $network $named $local_fs
-# Should-Start:      $portmap
-# Should-Stop:       $portmap
+# Should-Start:      nginx $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # X-Interactive:     true
@@ -103,8 +102,13 @@ case "$1" in
             fi
         fi
         ;;
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
     *)
-        echo "Usage: $0 {start|stop}"
+        echo "Usage: $0 {restart|start|stop}"
         exit 1
         ;;
 esac
