@@ -11,15 +11,14 @@
 # chimo <http://chimo.chromic.org/>. From which' Arch init scripts this is
 # based upon.
 #
-# ### BEGIN INIT INFO
+### BEGIN INIT INFO
 # Provides:          mediagoblin-paster
 # Required-Start:    $network $named $local_fs
 # Required-Stop:     $remote_fs $syslog $network $named $local_fs
-# Should-Start:      nginx $syslog
+# Should-Start:      postgres nginx $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# X-Interactive:     true
-# Short-Description: MediaGoblin paster init script
+# Short-Description: MediaGoblin paster FCGI server init script
 # Description:       This script will initiate the GNU MediaGoblin paster
 #                    fcgi server.
 ### END INIT INFO
