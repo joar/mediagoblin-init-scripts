@@ -24,15 +24,15 @@
 #                    fcgi server.
 ### END INIT INFO
 
-###########################################
+################################################################################
 # CHANGE THIS
 # to suit your environment
-###########################################
+################################################################################
 MG_ROOT=/home/joar/git/mediagoblin
-###########################################
+################################################################################
 # NOW STOP
-# You probably won't have to change these.
-###########################################
+# You probably won't have to change anything else.
+################################################################################
 
 set -e
 
@@ -72,10 +72,11 @@ case "$1" in
                 --log-file=$MG_PASTER_LOG_FILE \
                 --daemon" - $MG_USER &>/dev/null &
 
-            sleep 1
+            # Sleep for a while until we're kind of certain that paster has
+            # had it's time to initialize
+            sleep 5
 
             if [ $? -gt 0 ] || [ -z "$(getPID)" ]; then
-                # Paster failed to start
                 echo "Couldn't start paster process. See $MG_PASTER_LOG_FILE" 
                 echo "for details."
             else
@@ -94,6 +95,10 @@ case "$1" in
             echo "$MG_PASTER_PID_FILE"
         else
             kill $(getPID)
+
+            # Give some time to paster trying to stop
+            sleep 5
+
             if [ $? -gt 0 ]; then
                 echo "Couldn't stop $DAEMON_NAME, make sure it's still running"
                 echo "then remove $MG_PASTER_PID_FILE if needed."
@@ -104,8 +109,15 @@ case "$1" in
         ;;
     restart)
         $0 stop
-        sleep 1
+        sleep 5
         $0 start
+        ;;
+    status)
+        if ! [ -z "$(getPID)" ]; then
+            echo "$DAEMON_NAME start/running, process $(getPID)"
+        else
+            echo "$DAEMON_NAME stopped."
+        fi
         ;;
     *)
         echo "Usage: $0 {restart|start|stop}"
