@@ -15,7 +15,7 @@
 # Provides:          mediagoblin-paster
 # Required-Start:    $network $named $local_fs
 # Required-Stop:     $remote_fs $syslog $network $named $local_fs
-# Should-Start:      postgres nginx $syslog
+# Should-Start:      postgresql $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: MediaGoblin paster FCGI server init script
@@ -53,7 +53,9 @@ set_up_directories() {
 
 set_up_directories
 
-getPID() {
+. /lib/lsb/init-functions
+
+getPID () {
     # Discard any errors from cat
     cat $MG_PASTER_PID_FILE 2>/dev/null
 }
@@ -61,7 +63,7 @@ getPID() {
 case "$1" in 
     start)
         # Start the MediaGoblin paster process
-        echo "Starting $DAEMON_NAME..."
+        log_daemon_msg "Starting GNU MediaGoblin paster fcgi server" "$DAEMON_NAME"
         if [ -z "$(getPID)" ]; then
             su -s /bin/sh -c "CELERY_ALWAYS_EAGER=false ${MG_PASTER_BIN} serve \
                 $MG_PASTE_INI \
@@ -69,46 +71,44 @@ case "$1" in
                 fcgi_host=$MG_FCGI_HOST fcgi_port=$MG_FCGI_PORT \
                 --pid-file=$MG_PASTER_PID_FILE \
                 --log-file=$MG_PASTER_LOG_FILE \
-                --daemon" - $MG_USER &>/dev/null &
+                --daemon" - $MG_USER 2>&1 > /dev/null
+
+            PASTER_RESULT=$?
 
             # Sleep for a while until we're kind of certain that paster has
             # had it's time to initialize
-            sleep 5
+            TRIES=0
+            while ! [ "X$PASTER_RESULT" != "X" ]; do
+                log_action_msg "Tried $TRIES time(s)"
+                sleep 0.1
+                TRIES=$((TRIES+1))
+            done
 
-            if [ $? -gt 0 ] || [ -z "$(getPID)" ]; then
-                echo "Couldn't start paster process. See $MG_PASTER_LOG_FILE" 
-                echo "for details."
-            else
-                echo "MediaGoblin paster process started with PID $(getPID)."
-            fi
+            log_end_msg $PASTER_RESULT
         else
-            echo "$DAEMON_NAME server already running based on"
-            echo "$MG_PASTER_PID_FILE."
+            # Failed because the PID file indicates it's running
+            log_action_msg "PID file $MG_PASTER_BIN already exists"
+            log_end_msg 1
         fi
         ;;
     stop)
-        # Kill the MediaGoblin paster process
-        echo "Stopping $DAEMON_NAME..."
+        log_daemon_msg "Stopping GNU MediaGoblin paster fcgi server" "$DAEMON_NAME"
         if [ -z "$(getPID)" ]; then
-            echo "Doesn't seem like $DAEMON_NAME is running based on"
-            echo "$MG_PASTER_PID_FILE"
+            # Failed because the PID file indicates it's not running
+            RET=1
         else
             kill $(getPID)
 
-            # Give some time to paster trying to stop
-            sleep 5
-
             if [ $? -gt 0 ]; then
-                echo "Couldn't stop $DAEMON_NAME, make sure it's still running"
-                echo "then remove $MG_PASTER_PID_FILE if needed."
+                RET=1
             else
-                echo "$DAEMON_NAME stopped."
+                RET=0
             fi
         fi
+        log_end_msg $RET
         ;;
     restart)
         $0 stop
-        sleep 5
         $0 start
         ;;
     status)
@@ -119,7 +119,7 @@ case "$1" in
         fi
         ;;
     *)
-        echo "Usage: $0 {restart|start|stop}"
+        echo "Usage: $0 {restart|start|stop|status}"
         exit 1
         ;;
 esac
