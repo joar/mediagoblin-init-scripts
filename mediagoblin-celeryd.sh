@@ -40,6 +40,7 @@ DAEMON_NAME=mediagoblin-celeryd
 MG_USER=joar
 MG_BIN=$MG_ROOT/bin
 MG_CELERYD_BIN=$MG_BIN/celeryd
+MG_CONFIG=$MG_ROOT/mediagoblin_local.ini
 MG_CELERY_CONFIG_MODULE=mediagoblin.init.celery.from_celery
 MG_CELERYD_PID_FILE=/var/run/mediagoblin/$DAEMON_NAME.pid
 MG_CELERYD_LOG_FILE=/var/log/mediagoblin/$DAEMON_NAME.log
@@ -65,11 +66,12 @@ case "$1" in
         log_daemon_msg "Starting GNU MediaGoblin Celery task queue" "$DAEMON_NAME"
         if [ -z "$(getPID)" ]; then
             su -s /bin/sh -c "cd $MG_ROOT && \
+                MEDIAGOBLIN_CONFIG=$MG_CONFIG \
                 CELERY_CONFIG_MODULE=$MG_CELERY_CONFIG_MODULE \
                 $MG_CELERYD_BIN \
                 --pidfile=$MG_CELERYD_PID_FILE \
-                -f $MG_CELERYD_LOG_FILE \
-                --loglevel=INFO" - $MG_USER 2>&1 > /dev/null &
+                -f $MG_CELERYD_LOG_FILE" \
+                - $MG_USER 2>&1 > /dev/null &
 
             CELERYD_RESULT=$?
             
