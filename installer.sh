@@ -13,7 +13,7 @@
 # # This will download the latest version of the installer.sh script directly
 # # From gist.github.com (-L allowing a 302 redirect to raw.github.com), then
 # # pipe the script directly through `sh` (presumably /bin/sh).
-# $ curl -L https://gist.github.com/raw/79020220c13a4839ea8b/installer.sh | sh
+# $ curl -L http://wandborg.se/mediagoblin-init-scripts/installer.sh | sh
 #
 # By default the MG_ROOT will be set to `pwd` and the user will be set to the
 # user you run the script as.
@@ -35,11 +35,11 @@ else
     MEDIAGOBLIN_USER=$(whoami)
 fi
 
-PASTER_INIT_URL="https://raw.github.com/gist/79020220c13a4839ea8b/mediagoblin-paster.sh"
+PASTER_INIT_URL="http://wandborg.se/mediagoblin-init-scripts/mediagoblin-paster.sh"
 
 PASTER_INIT_DESTINATION=/etc/init.d/mediagoblin-paster
 
-CELERYD_INIT_URL="https://raw.github.com/gist/79020220c13a4839ea8b/mediagoblin-celeryd.sh"
+CELERYD_INIT_URL="http://wandborg.se/mediagoblin-init-scripts/mediagoblin-celeryd.sh"
 CELERYD_INIT_DESTINATION=/etc/init.d/mediagoblin-celeryd
 
 verify_and_install () {
