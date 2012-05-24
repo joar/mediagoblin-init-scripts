@@ -34,14 +34,6 @@ Run::
 The hard but safe way
 ~~~~~~~~~~~~~~~~~~~~~
 
-1. Download the ``mediagoblin-paster.sh`` and ``mediagoblin-celeryd.sh``
-   scripts.
-2. For **both** the scripts, open them in your favourite text editor and
-   customize the variables ``MG_ROOT`` and ``MG_USER`` to fit your environment.
-3. Copy the scripts to ``/etc/init.d/mediagoblin-paster`` and
-   ``/etc/init.d/mediagoblin-celeryd`` (**No ``.sh`` file extension**)
-4. For **both** the scripts, run ``sudo insserv $script``.
-
 1. Download the ``mediagoblin-paster.sh`` script.
 2. Opend the ``mediagoblin-celeryd.sh`` script in your favourite text editor.
 3. Replace ``MG_ROOT=...`` and ``MG_USER=...`` with values that fit your
