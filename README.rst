@@ -8,6 +8,21 @@ automatically on reboot.
 These scripts should free you of some burdens, and if you don't feel you
 have any, you might not need them :)
 
+Compatibility
+-------------
+
+The MediaGoblin init scripts are made compativle with `Debian's
+dependency-based boot sequence`_. They use functions sourced from
+``/lib/lsb/init-functions`` and are installed with ``insserv``.
+
+.. _`Debian's dependency-based boot sequence`: http://wiki.debian.org/LSBInitScripts/DependencyBasedBoot
+
+For Arch alternatives, see `MediaGoblin - ArchLinux rc.d scripts by jpope`_ and
+`Mediagoblin init script on Archlinux by Chimo`_.
+
+.. _`MediaGoblin - ArchLinux rc.d scripts by jpope`: http://whird.jpope.org/2012/04/14/mediagoblin-archlinux-rcd-scripts
+.. _`Mediagoblin init script on Archlinux by Chimo`: http://chimo.chromic.org/2012/03/01/mediagoblin-init-script-on-archlinux/
+
 Installation
 ------------
 
