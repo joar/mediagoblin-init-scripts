@@ -23,8 +23,6 @@
 # waived all copyright and related or neighboring rights to
 # mediagoblin-paster. This work is published from Sweden.
 
-set -e
-
 if ! [ -z "$1" ]; then
     MEDIAGOBLIN_ROOT=$1
 else
