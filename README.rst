@@ -17,6 +17,7 @@ The easy way
 Run::
 
     cd <mediagoblin-git-root-here>
+    # Run this command as the user you will run the services as.
     curl http://wandborg.se/mediagoblin-init-scripts/installer.sh | sh
 
 .. warning::
@@ -35,7 +36,7 @@ The hard but safe way
 ~~~~~~~~~~~~~~~~~~~~~
 
 1. Download the ``mediagoblin-paster.sh`` script.
-2. Opend the ``mediagoblin-celeryd.sh`` script in your favourite text editor.
+2. Open the ``mediagoblin-paster.sh`` script in your favourite text editor.
 3. Replace ``MG_ROOT=...`` and ``MG_USER=...`` with values that fit your
    environment.
 4. Save the script to ``/etc/init.d/mediagoblin-paster`` (without the ``.sh``
