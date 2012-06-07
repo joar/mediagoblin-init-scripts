@@ -14,7 +14,7 @@ have any, you might not need them :)
 Compatibility
 -------------
 
-The MediaGoblin init scripts are made compativle with `Debian's
+These MediaGoblin init scripts are compatible with `Debian's
 dependency-based boot sequence`_. They use functions sourced from
 ``/lib/lsb/init-functions`` and are installed with ``insserv``.
 
