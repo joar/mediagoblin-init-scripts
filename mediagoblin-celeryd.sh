@@ -87,7 +87,7 @@ case "$1" in
             log_end_msg $CELERYD_RESULT
         else
             # Failed because the PID file indicates it's running
-            log_action_msg "PID file $MG_CELERYD_BIN already exists"
+            log_action_msg "PID file $MG_CELERYD_PID_FILE already exists"
             log_end_msg 1
         fi
         ;;
