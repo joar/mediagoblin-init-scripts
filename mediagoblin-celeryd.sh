@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # /etc/init.d/mediagoblin-celeryd
 #
 ## LICENSE: CC0 <http://creativecommons.org/publicdomain/zero/1.0/>
@@ -55,6 +55,52 @@ set_up_directories
 # Include LSB helper functions
 . /lib/lsb/init-functions
 
+wait_for_death() {
+    pid=$1
+    seconds=1
+
+    if [ -z "$2" ]; then
+        kill_at=20
+    else
+        kill_at=$2
+    fi
+
+    if [ -z "$pid" ]; then
+        log_action_msg "Could not get PID. Aborting"
+        log_end_msg 1
+        exit 1
+    fi
+
+    while ps ax | grep -v grep | grep $pid > /dev/null; do
+        sleep 1
+        seconds=$(expr $seconds + 1)
+        if [ $seconds -ge $kill_at ]; then
+            log_action_msg "Failed to shut down after $kill_at seconds. Aborting"
+            log_end_msg 1
+            exit 1
+        fi
+    done
+    log_end_msg 0
+}
+
+wait_for_pidfile() {
+    pidfile=$1
+    kill_at=20
+    seconds=1
+
+    while ! [[ -f $pidfile ]]; do
+        sleep 1
+        seconds=$(expr $seconds + 1)
+
+        if [ $seconds -ge $kill_at ]; then
+            log_action_msg "Can't find the PID file," \
+                " the application must have crashed."
+            log_end_msg 1
+            exit 1
+        fi
+    done
+}
+
 getPID() {
     # Discard any errors from cat
     cat $MG_CELERYD_PID_FILE 2>/dev/null
@@ -65,24 +111,18 @@ case "$1" in
         # Start the MediaGoblin celeryd process
         log_daemon_msg "Starting GNU MediaGoblin Celery task queue" "$DAEMON_NAME"
         if [ -z "$(getPID)" ]; then
+            # TODO: Could we send things to log a little bit more beautiful?
             su -s /bin/sh -c "cd $MG_ROOT && \
                 MEDIAGOBLIN_CONFIG=$MG_CONFIG \
                 CELERY_CONFIG_MODULE=$MG_CELERY_CONFIG_MODULE \
                 $MG_CELERYD_BIN \
                 --pidfile=$MG_CELERYD_PID_FILE \
-                -f $MG_CELERYD_LOG_FILE" \
-                - $MG_USER 2>&1 > /dev/null &
+                -f $MG_CELERYD_LOG_FILE 2>&1 >> $MG_CELERYD_PID_FILE" \
+                - $MG_USER 2>&1 >> $MG_CELERYD_LOG_FILE &
 
             CELERYD_RESULT=$?
-            
-            # Sleep for a while until we're kind of certain that celeryd has
-            # had it's time to initialize
-            TRIES=0
-            while ! [ "X$CELERYD_RESULT" != "X" ]; do
-                log_action_msg "Tried $TRIES time(s)"
-                sleep 0.1
-                TRIES=$((TRIES+1))
-            done
+
+            wait_for_pidfile $MG_CELERYD_PID_FILE
 
             log_end_msg $CELERYD_RESULT
         else
@@ -99,13 +139,8 @@ case "$1" in
         else
             kill $(getPID)
 
-            if [ $? -gt 0 ]; then
-                RET=1
-            else
-                RET=0
-            fi
+            wait_for_death $(getPID)
         fi
-        log_end_msg $RET
         ;;
     restart)
         $0 stop
