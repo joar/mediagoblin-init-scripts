@@ -27,8 +27,8 @@
 # CHANGE THIS
 # to suit your environment
 ################################################################################
-MG_ROOT=/home/joar/git/mediagoblin
-MG_USER=joar
+MG_ROOT=/var/www/media.luckey.se/mediagoblin
+MG_USER=mediagoblin
 ################################################################################
 # NOW STOP
 # You probably won't have to change anything else.

@@ -27,8 +27,8 @@
 # CHANGE THIS
 # to suit your environment
 ################################################################################
-MG_ROOT=/home/joar/git/mediagoblin
-MG_USER=joar
+MG_ROOT=/var/www/media.luckey.se/mediagoblin/
+MG_USER=mediagoblin
 ################################################################################
 # NOW STOP
 # You probably won't have to change anything else.
@@ -42,7 +42,7 @@ MG_BIN=$MG_ROOT/bin
 MG_PASTER_BIN=$MG_BIN/paster
 MG_PASTE_INI=$MG_ROOT/paste_local.ini
 MG_FCGI_HOST=127.0.0.1
-MG_FCGI_PORT=26543
+MG_FCGI_PORT=6543
 MG_PASTER_PID_FILE=/var/run/mediagoblin/$DAEMON_NAME.pid
 MG_PASTER_LOG_FILE=/var/log/mediagoblin/$DAEMON_NAME.log
 
@@ -65,7 +65,9 @@ case "$1" in
     start)
         # Start the MediaGoblin paster process
         log_daemon_msg "Starting GNU MediaGoblin paster fcgi server" "$DAEMON_NAME"
-	if [ ! -f $MG_PASTE_INI ]; then                                                                      $MG_PASTE_INI = $MG_ROOT/paste.ini                                                          fi
+	if [ ! -f $MG_PASTE_INI ]; then
+            MG_PASTE_INI=$MG_ROOT/paste.ini
+	fi
         if [ -z "$(getPID)" ]; then
             su -s /bin/sh -c "CELERY_ALWAYS_EAGER=False $MG_PASTER_BIN serve \
                 $MG_PASTE_INI \
