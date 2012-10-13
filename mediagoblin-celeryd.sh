@@ -135,7 +135,9 @@ case "$1" in
         log_daemon_msg "Stopping GNU MediaGoblin Celery task queue" "$DAEMON_NAME"
         if [ -z "$(getPID)" ]; then
             # Failed because the PID file indicates it's not running
-            RET=1
+            log_action_msg "Could not get PID"
+            log_end_msg 1
+            exit 1
         else
             kill $(getPID)
 
