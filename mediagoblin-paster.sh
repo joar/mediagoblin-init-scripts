@@ -65,6 +65,7 @@ case "$1" in
     start)
         # Start the MediaGoblin paster process
         log_daemon_msg "Starting GNU MediaGoblin paster fcgi server" "$DAEMON_NAME"
+	if [ ! -f $MG_PASTE_INI ]; then                                                                      $MG_PASTE_INI = $MG_ROOT/paste.ini                                                          fi
         if [ -z "$(getPID)" ]; then
             su -s /bin/sh -c "CELERY_ALWAYS_EAGER=False $MG_PASTER_BIN serve \
                 $MG_PASTE_INI \
