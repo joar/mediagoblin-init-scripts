@@ -28,6 +28,7 @@
 # to suit your environment
 ################################################################################
 MG_ROOT=/home/joar/git/mediagoblin
+MG_USER=joar
 ################################################################################
 # NOW STOP
 # You probably won't have to change anything else.
@@ -37,7 +38,6 @@ set -e
 
 DAEMON_NAME=mediagoblin-celeryd
 
-MG_USER=joar
 MG_BIN=$MG_ROOT/bin
 MG_CELERYD_BIN=$MG_BIN/celeryd
 MG_CONFIG=$MG_ROOT/mediagoblin_local.ini
