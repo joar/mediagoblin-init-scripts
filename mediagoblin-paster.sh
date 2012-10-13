@@ -28,6 +28,7 @@
 # to suit your environment
 ################################################################################
 MG_ROOT=/home/joar/git/mediagoblin
+MG_USER=joar
 ################################################################################
 # NOW STOP
 # You probably won't have to change anything else.
@@ -40,7 +41,6 @@ DAEMON_NAME=mediagoblin-paster
 MG_BIN=$MG_ROOT/bin
 MG_PASTER_BIN=$MG_BIN/paster
 MG_PASTE_INI=$MG_ROOT/paste_local.ini
-MG_USER=joar
 MG_FCGI_HOST=127.0.0.1
 MG_FCGI_PORT=26543
 MG_PASTER_PID_FILE=/var/run/mediagoblin/$DAEMON_NAME.pid
