@@ -39,8 +39,8 @@ PASTER_INIT_URL="http://wandborg.se/mediagoblin-init-scripts/mediagoblin-paster.
 
 PASTER_INIT_DESTINATION=/etc/init.d/mediagoblin-paster
 
-CELERYD_INIT_URL="http://wandborg.se/mediagoblin-init-scripts/mediagoblin-celeryd.sh"
-CELERYD_INIT_DESTINATION=/etc/init.d/mediagoblin-celeryd
+CELERYD_INIT_URL="http://wandborg.se/mediagoblin-init-scripts/mediagoblin-celery-worker.sh"
+CELERYD_INIT_DESTINATION=/etc/init.d/mediagoblin-celery-worker
 
 verify_and_install () {
     INIT_PATH=$1
@@ -67,7 +67,7 @@ sudo su -c "curl $PASTER_INIT_URL \
 
 verify_and_install $PASTER_INIT_DESTINATION
 
-# Download and fix the mediagoblin-celeryd script
+# Download and fix the mediagoblin-celery-worker script
 sudo su -c "curl $CELERYD_INIT_URL \
     | sed s,^MG_ROOT=.*\n,MG_ROOT=$MEDIAGOBLIN_ROOT, \
     | sed s,^MG_USER=.*\n,MG_USER=$MEDIAGOBLIN_USER, \
