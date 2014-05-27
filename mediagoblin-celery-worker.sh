@@ -1,10 +1,10 @@
 #!/bin/bash
-# /etc/init.d/mediagoblin-celeryd
+# /etc/init.d/mediagoblin-celery-worker
 #
 ## LICENSE: CC0 <http://creativecommons.org/publicdomain/zero/1.0/>
 # To the extent possible under law, Joar Wandborg <http://wandborg.se> has
 # waived all copyright and related or neighboring rights to
-# mediagoblin-celeryd. This work is published from Sweden.
+# mediagoblin-celery-worker. This work is published from Sweden.
 #
 ## CREDIT
 # Credit goes to jpope <http://jpope.org/> and 
@@ -12,7 +12,7 @@
 # based upon.
 #
 ### BEGIN INIT INFO
-# Provides:          mediagoblin-celeryd
+# Provides:          mediagoblin-celery-worker
 # Required-Start:    $network $named $local_fs
 # Required-Stop:     $remote_fs $syslog $network $named $local_fs
 # Should-Start:      postgres $syslog
@@ -36,10 +36,10 @@ MG_USER=mediagoblin
 
 set -e
 
-DAEMON_NAME=mediagoblin-celeryd
+DAEMON_NAME=mediagoblin-celery-worker
 
 MG_BIN=$MG_ROOT/bin
-MG_CELERYD_BIN=$MG_BIN/celeryd
+MG_CELERYD_BIN=$MG_BIN/celery\ worker
 MG_CONFIG=$MG_ROOT/mediagoblin_local.ini
 MG_CELERY_CONFIG_MODULE=mediagoblin.init.celery.from_celery
 MG_CELERYD_PID_FILE=/var/run/mediagoblin/$DAEMON_NAME.pid
@@ -108,7 +108,7 @@ getPID() {
 
 case "$1" in 
     start)
-        # Start the MediaGoblin celeryd process
+        # Start the MediaGoblin celery worker process
         log_daemon_msg "Starting GNU MediaGoblin Celery task queue" "$DAEMON_NAME"
         if [ -z "$(getPID)" ]; then
             # TODO: Could we send things to log a little bit more beautiful?
